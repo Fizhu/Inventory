@@ -1,6 +1,6 @@
 # inventory
 
-A new Flutter application.
+An Inventory app made with flutter
 
 ## Getting Started
 
