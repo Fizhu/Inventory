@@ -3,6 +3,7 @@ import 'package:inventory/ui/add/add.dart';
 import 'package:inventory/ui/detail/detail.dart';
 import 'package:inventory/ui/home/home.dart';
 import 'package:inventory/ui/login/login.dart';
+import 'package:inventory/utils/pref.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,6 +11,16 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  String _getStatus() {
+    var status = UserPref().getStatus() ?? false;
+    if (status) {
+      return HomePage.routeName;
+    } else {
+      return LoginPage.routeName;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +44,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: HomePage.routeName,
+      initialRoute: _getStatus(),
       routes: {
         HomePage.routeName: (context) => HomePage(),
         LoginPage.routeName: (context) => LoginPage(),
