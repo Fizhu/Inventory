@@ -5,20 +5,26 @@ import 'package:inventory/ui/home/home.dart';
 import 'package:inventory/ui/login/login.dart';
 import 'package:inventory/utils/pref.dart';
 
-void main() {
-  runApp(MyApp());
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  String _token;
 
-  String _getStatus() {
-    var status = UserPref().getStatus() ?? false;
-    if (status) {
-      return HomePage.routeName;
-    } else {
-      return LoginPage.routeName;
-    }
+  // This widget is the root of your application.
+  Future<String> _getStatus() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    _token = await UserPref().getToken();
+  }
+
+  @override
+  void initState() {
+    UserPref().setToken('ssss');
+    _getStatus();
   }
 
   @override
@@ -44,7 +50,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: _getStatus(),
+      initialRoute: _token == null ? LoginPage.routeName : HomePage.routeName,
       routes: {
         HomePage.routeName: (context) => HomePage(),
         LoginPage.routeName: (context) => LoginPage(),
