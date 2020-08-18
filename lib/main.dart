@@ -7,24 +7,19 @@ import 'package:inventory/utils/pref.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+class MyApp extends StatelessWidget {
 
-class _MyAppState extends State<MyApp> {
-  String _token;
-
-  // This widget is the root of your application.
-  Future<String> _getStatus() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    _token = await UserPref().getToken();
-  }
-
-  @override
-  void initState() {
-    UserPref().setToken('ssss');
-    _getStatus();
+  _getStatus() {
+    FutureBuilder<bool>(
+      future: UserPref().getStatus(),
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.data) {
+          return HomePage();
+        } else {
+          return LoginPage();
+        }
+      },
+    );
   }
 
   @override
@@ -50,7 +45,7 @@ class _MyAppState extends State<MyApp> {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: _token == null ? LoginPage.routeName : HomePage.routeName,
+      initialRoute: HomePage.routeName,
       routes: {
         HomePage.routeName: (context) => HomePage(),
         LoginPage.routeName: (context) => LoginPage(),
