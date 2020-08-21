@@ -3,25 +3,11 @@ import 'package:inventory/ui/add/add.dart';
 import 'package:inventory/ui/detail/detail.dart';
 import 'package:inventory/ui/home/home.dart';
 import 'package:inventory/ui/login/login.dart';
-import 'package:inventory/utils/pref.dart';
+import 'package:inventory/ui/splash/splash.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
-  _getStatus() {
-    FutureBuilder<bool>(
-      future: UserPref().getStatus(),
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.data) {
-          return HomePage();
-        } else {
-          return LoginPage();
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,8 +31,9 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: HomePage.routeName,
+      initialRoute: Splash.routeName,
       routes: {
+        Splash.routeName: (context) => Splash(),
         HomePage.routeName: (context) => HomePage(),
         LoginPage.routeName: (context) => LoginPage(),
         DetailPage.routeName: (context) => DetailPage(),
