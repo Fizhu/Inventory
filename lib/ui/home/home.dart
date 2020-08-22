@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventory/ui/detail/detail.dart';
-import 'package:inventory/utils/navigation.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/';
@@ -22,9 +20,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               width: MediaQuery.of(context).size.width,
               child: RaisedButton(
-                onPressed: () {
-                  Navigation.intent(context, DetailPage.routeName);
-                },
+                onPressed: () {},
                 padding: const EdgeInsets.all(8.0),
                 child: const Text('Detail'),
               ),
