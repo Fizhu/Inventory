@@ -10,7 +10,9 @@ ResponseData _$ResponseDataFromJson(Map<String, dynamic> json) {
   return ResponseData(
     json['status'] as bool,
     json['message'] as String,
-    json['data'] as Map<String, dynamic>,
+    json['data'] == null
+        ? null
+        : User.fromJson(json['data'] as Map<String, dynamic>),
   );
 }
 

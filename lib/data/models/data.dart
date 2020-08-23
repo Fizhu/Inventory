@@ -9,13 +9,13 @@ class ResponseData {
   @JsonKey(name: 'message')
   String message;
   @JsonKey(name: 'data')
-  Map<String, dynamic> data;
+  User data;
 
   ResponseData(this.status, this.message, this.data);
 
-  factory ResponseData.fromJson(Map<String, dynamic> json) => _$ResponseDataFromJson(json);
+  factory ResponseData.fromJson(Map<dynamic, dynamic> json) => _$ResponseDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ResponseDataToJson(this);
+  Map<dynamic, dynamic> toJson() => _$ResponseDataToJson(this);
 
 }
 
@@ -30,9 +30,9 @@ class ResponseList {
 
   ResponseList(this.status, this.message, this.list);
 
-  factory ResponseList.fromJson(Map<String, dynamic> json) => _$ResponseListFromJson(json);
+  factory ResponseList.fromJson(Map<dynamic, dynamic> json) => _$ResponseListFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ResponseListToJson(this);
+  Map<dynamic, dynamic> toJson() => _$ResponseListToJson(this);
 
 }
 
@@ -58,7 +58,7 @@ class User {
   User(this.idUser, this.idJabatan, this.nama, this.email, this.token,
       this.telepon, this.alamat, this.foto);
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory User.fromJson(Map<dynamic, dynamic> json) => _$UserFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<dynamic, dynamic> toJson() => _$UserToJson(this);
 }

@@ -1,3 +1,4 @@
+import 'package:inventory/data/models/data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPref {
@@ -9,7 +10,7 @@ class UserPref {
   static const _PREF_TOKEN = 'keyToken';
   static const _PREF_TELEPON = 'keyTelepon';
   static const _PREF_ALAMAT = 'keyAlamat';
-  static const _PREF_FOTO = 'pref.keyFoto';
+  static const _PREF_FOTO = 'keyFoto';
 
   static setStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -28,7 +29,7 @@ class UserPref {
 
   static Future<int> getId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_PREF_ID);
+    return prefs.getInt(_PREF_ID) ?? 0;
   }
 
   static setNama(String nama) async {
@@ -41,14 +42,54 @@ class UserPref {
     return prefs.getString(_PREF_NAMA) ?? 'No data';
   }
 
-  static setEmail(String nama) async {
+  static setEmail(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_PREF_EMAIL, nama);
+    prefs.setString(_PREF_EMAIL, email);
   }
 
   static Future<String> getEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(_PREF_EMAIL) ?? 'No data';
+  }
+
+  static setIdJabatan(int jabatan) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(_PREF_JABATAN, jabatan);
+  }
+
+  static Future<int> getIdJabatan() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_PREF_JABATAN) ?? 0;
+  }
+
+  static setTelepon(String telepon) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_PREF_TELEPON, telepon);
+  }
+
+  static Future<String> getTelepon() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_PREF_TELEPON) ?? 'No data';
+  }
+
+  static setAlamat(String alamat) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_PREF_ALAMAT, alamat);
+  }
+
+  static Future<String> getAlamat() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_PREF_ALAMAT) ?? 'No data';
+  }
+
+  static setFoto(String foto) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_PREF_FOTO, foto);
+  }
+
+  static Future<String> getFoto() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_PREF_FOTO) ?? 'No data';
   }
 
   static setToken(String token) async {
@@ -58,19 +99,30 @@ class UserPref {
 
   static Future<String> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_TOKEN);
+    return prefs.getString(_PREF_TOKEN) ?? '';
+  }
+
+  static setUser(User user) {
+    setId(user.idUser);
+    setIdJabatan(user.idJabatan);
+    setNama(user.nama);
+    setEmail(user.email);
+    setToken(user.token);
+    setTelepon(user.telepon);
+    setAlamat(user.alamat);
+    setFoto(user.foto);
   }
 
   static clearData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove(_PREF_STATUS);
     prefs.remove(_PREF_ID);
-//    prefs.remove(_PREF_JABATAN);
+    prefs.remove(_PREF_JABATAN);
     prefs.remove(_PREF_NAMA);
     prefs.remove(_PREF_EMAIL);
     prefs.remove(_PREF_TOKEN);
-//    prefs.remove(_PREF_TELEPON);
-//    prefs.remove(_PREF_ALAMAT);
-//    prefs.remove(_PREF_FOTO);
+    prefs.remove(_PREF_TELEPON);
+    prefs.remove(_PREF_ALAMAT);
+    prefs.remove(_PREF_FOTO);
   }
 }

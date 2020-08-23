@@ -1,7 +1,12 @@
+import 'dart:math';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:inventory/ui/home/home.dart';
-import 'package:inventory/utils/pref.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:inventory/data/remote/rest_client.dart';
+import 'package:inventory/utils/ext.dart';
+import 'package:logger/logger.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -13,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible;
   String _email, _password;
+  RestClient _restClient = RestClient(Dio());
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -23,31 +29,43 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   double _getHeight() {
-    if (MediaQuery
-        .of(context)
-        .orientation == Orientation.landscape) {
-      return MediaQuery
-          .of(context)
-          .size
-          .height / 2;
+    if (MediaQuery.of(context).orientation == Orientation.landscape) {
+      return MediaQuery.of(context).size.height / 2;
     } else {
-      return MediaQuery
-          .of(context)
-          .size
-          .height / 5;
+      return MediaQuery.of(context).size.height / 5;
+    }
+  }
+
+  _login() async {
+    try {
+      var login = await _restClient.login(_email, _password);
+      if (login.status) {
+        Fluttertoast.showToast(msg: login.message);
+      } else {
+        Fluttertoast.showToast(msg: login.message);
+      }
+    } on DioError catch (e, s) {
+      if (e.type == DioErrorType.CONNECT_TIMEOUT ||
+          e.type == DioErrorType.RECEIVE_TIMEOUT) {
+        Ext.handleError('Connection Timeout', e.message);
+      } else if (e.type == DioErrorType.DEFAULT) {
+        Ext.handleError('Connection Problem', e.message+ '\n' + 'StackTrace : $s');
+      } else {
+        Ext.handleError(
+            'Something when wrong', e.message + '\n' + 'StackTrace : $s');
+      }
     }
   }
 
   void _handleSubmit() async {
     final FormState form = _formKey.currentState;
-    if (!form.validate()) {} else {
+    if (!form.validate()) {
+    } else {
       form.save();
-      UserPref.setStatus();
-      UserPref.setToken('555552sdgsdg');
-      UserPref.setId(1);
-      UserPref.setNama('Fizhu');
-      UserPref.setEmail(_email);
-      Navigator.pushReplacementNamed(context, HomePage.routeName);
+//      UserPref.setStatus();
+//      UserPref.setUser(user);
+      _login();
+//      Navigator.pushReplacementNamed(context, HomePage.routeName);
     }
   }
 
@@ -62,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
         validator: (value) {
           if (value.isEmpty) {
             return 'Password is Required';
-          } else if (value.length < 6){
+          } else if (value.length < 6) {
             return 'Password should contains more then 5 character';
           } else {
             return null;
@@ -79,9 +97,7 @@ class _LoginPageState extends State<LoginPage> {
           suffixIcon: IconButton(
             icon: Icon(
               // Based on passwordVisible state choose the icon
-              _passwordVisible
-                  ? Icons.visibility
-                  : Icons.visibility_off,
+              _passwordVisible ? Icons.visibility : Icons.visibility_off,
             ),
             onPressed: () {
               // Update the state i.e. toogle the state of passwordVisible variable
@@ -150,10 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 24.0,
                     ),
                     Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
+                      width: MediaQuery.of(context).size.width,
                       child: RaisedButton(
                         padding: EdgeInsets.all(16.0),
                         shape: RoundedRectangleBorder(
