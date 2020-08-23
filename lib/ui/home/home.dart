@@ -12,7 +12,7 @@ class _HomePageState extends State<HomePage> {
   String _mail = '';
 
   _getData() async {
-    var _mail = await UserPref.getEmail() ?? '';
+    var _mail = await UserPref.getEmail();
     setState(() {
       this._mail = _mail;
     });

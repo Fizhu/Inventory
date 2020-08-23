@@ -18,7 +18,7 @@ class UserPref {
 
   static Future<bool> getStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_PREF_STATUS);
+    return prefs.getBool(_PREF_STATUS) ?? false;
   }
 
   static setId(int id) async {
@@ -38,7 +38,7 @@ class UserPref {
 
   static Future<String> getNama() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_NAMA);
+    return prefs.getString(_PREF_NAMA) ?? 'No data';
   }
 
   static setEmail(String nama) async {
@@ -48,7 +48,7 @@ class UserPref {
 
   static Future<String> getEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_EMAIL);
+    return prefs.getString(_PREF_EMAIL) ?? 'No data';
   }
 
   static setToken(String token) async {

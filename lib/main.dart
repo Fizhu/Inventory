@@ -10,7 +10,7 @@ bool _isLogin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  _isLogin = await UserPref.getStatus() ?? false;
+  _isLogin = await UserPref.getStatus();
   if (_isLogin) {
     _route = HomePage.routeName;
   } else {
