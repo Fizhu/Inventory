@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:inventory/utils/pref.dart';
 
 class HomePage extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/home';
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  String _mail = '';
+
+  _getData() async {
+    var _mail = await UserPref.getEmail() ?? '';
+    setState(() {
+      this._mail = _mail;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _getData();
     return Scaffold(
         body: SafeArea(
       child: Container(
@@ -20,9 +31,9 @@ class _HomePageState extends State<HomePage> {
             Container(
               width: MediaQuery.of(context).size.width,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () { UserPref.clearData(); },
                 padding: const EdgeInsets.all(8.0),
-                child: const Text('Detail'),
+                child: Text(_mail),
               ),
             ),
           ]),

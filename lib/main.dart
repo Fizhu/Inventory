@@ -6,11 +6,11 @@ import 'package:inventory/ui/login/login.dart';
 import 'package:inventory/utils/pref.dart';
 
 String _route = LoginPage.routeName;
-bool _isLogin = false;
+bool _isLogin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  _isLogin = await UserPref().getStatus() ?? false;
+  _isLogin = await UserPref.getStatus() ?? false;
   if (_isLogin) {
     _route = HomePage.routeName;
   } else {
@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: _route,
       routes: {
-        HomePage.routeName: (context) => HomePage(),
         LoginPage.routeName: (context) => LoginPage(),
+        HomePage.routeName: (context) => HomePage(),
         DetailPage.routeName: (context) => DetailPage(),
         AddPage.routeName: (context) => AddPage(),
       },
