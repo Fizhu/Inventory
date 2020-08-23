@@ -8,11 +8,9 @@ part of 'data.dart';
 
 ResponseData _$ResponseDataFromJson(Map<String, dynamic> json) {
   return ResponseData(
-    json['status'] as bool,
-    json['message'] as String,
-    json['data'] == null
-        ? null
-        : User.fromJson(json['data'] as Map<String, dynamic>),
+    status: json['status'] as bool,
+    message: json['message'] as String,
+    data: json['data'] as Map<String, dynamic>,
   );
 }
 

@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory/data/remote/rest_client.dart';
 import 'package:inventory/utils/ext.dart';
-import 'package:logger/logger.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -38,18 +35,23 @@ class _LoginPageState extends State<LoginPage> {
 
   _login() async {
     try {
+      Ext.showLoading(context);
       var login = await _restClient.login(_email, _password);
       if (login.status) {
+        Ext.dismissLoading(context);
         Fluttertoast.showToast(msg: login.message);
       } else {
+        Ext.dismissLoading(context);
         Fluttertoast.showToast(msg: login.message);
       }
     } on DioError catch (e, s) {
+      Ext.dismissLoading(context);
       if (e.type == DioErrorType.CONNECT_TIMEOUT ||
           e.type == DioErrorType.RECEIVE_TIMEOUT) {
         Ext.handleError('Connection Timeout', e.message);
       } else if (e.type == DioErrorType.DEFAULT) {
-        Ext.handleError('Connection Problem', e.message+ '\n' + 'StackTrace : $s');
+        Ext.handleError(
+            'Connection Problem', e.message + '\n' + 'StackTrace : $s');
       } else {
         Ext.handleError(
             'Something when wrong', e.message + '\n' + 'StackTrace : $s');

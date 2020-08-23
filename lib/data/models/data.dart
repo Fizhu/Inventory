@@ -5,60 +5,60 @@ part 'data.g.dart';
 @JsonSerializable()
 class ResponseData {
   @JsonKey(name: 'status')
-  bool status;
+  final bool status;
   @JsonKey(name: 'message')
-  String message;
+  final String message;
   @JsonKey(name: 'data')
-  User data;
+  final Map<String, dynamic> data;
 
-  ResponseData(this.status, this.message, this.data);
+  ResponseData({this.status, this.message, this.data});
 
-  factory ResponseData.fromJson(Map<dynamic, dynamic> json) => _$ResponseDataFromJson(json);
+  factory ResponseData.fromJson(Map<String, dynamic> json) =>
+      _$ResponseDataFromJson(json);
 
-  Map<dynamic, dynamic> toJson() => _$ResponseDataToJson(this);
-
+  Map<String, dynamic> toJson() => _$ResponseDataToJson(this);
 }
 
 @JsonSerializable()
 class ResponseList {
   @JsonKey(name: 'status')
-  bool status;
+  final bool status;
   @JsonKey(name: 'message')
-  String message;
+  final String message;
   @JsonKey(name: 'data')
-  List<dynamic> list;
+  final List<dynamic> list;
 
   ResponseList(this.status, this.message, this.list);
 
-  factory ResponseList.fromJson(Map<dynamic, dynamic> json) => _$ResponseListFromJson(json);
+  factory ResponseList.fromJson(Map<String, dynamic> json) =>
+      _$ResponseListFromJson(json);
 
-  Map<dynamic, dynamic> toJson() => _$ResponseListToJson(this);
-
+  Map<String, dynamic> toJson() => _$ResponseListToJson(this);
 }
 
 @JsonSerializable()
 class User {
   @JsonKey(name: 'id_user')
-  int idUser;
+  final int idUser;
   @JsonKey(name: 'id_jabatan')
-  int idJabatan;
+  final int idJabatan;
   @JsonKey(name: 'nama')
-  String nama;
+  final String nama;
   @JsonKey(name: 'email')
-  String email;
+  final String email;
   @JsonKey(name: 'token')
-  String token;
+  final String token;
   @JsonKey(name: 'telepon')
-  String telepon;
+  final String telepon;
   @JsonKey(name: 'alamat')
-  String alamat;
+  final String alamat;
   @JsonKey(name: 'foto')
-  String foto;
+  final String foto;
 
   User(this.idUser, this.idJabatan, this.nama, this.email, this.token,
       this.telepon, this.alamat, this.foto);
 
-  factory User.fromJson(Map<dynamic, dynamic> json) => _$UserFromJson(json);
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  Map<dynamic, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 }
