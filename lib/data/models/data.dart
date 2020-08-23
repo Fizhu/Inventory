@@ -3,6 +3,40 @@ import 'package:json_annotation/json_annotation.dart';
 part 'data.g.dart';
 
 @JsonSerializable()
+class ResponseData {
+  @JsonKey(name: 'status')
+  bool status;
+  @JsonKey(name: 'message')
+  String message;
+  @JsonKey(name: 'data')
+  Map<String, dynamic> data;
+
+  ResponseData(this.status, this.message, this.data);
+
+  factory ResponseData.fromJson(Map<String, dynamic> json) => _$ResponseDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResponseDataToJson(this);
+
+}
+
+@JsonSerializable()
+class ResponseList {
+  @JsonKey(name: 'status')
+  bool status;
+  @JsonKey(name: 'message')
+  String message;
+  @JsonKey(name: 'data')
+  List<dynamic> list;
+
+  ResponseList(this.status, this.message, this.list);
+
+  factory ResponseList.fromJson(Map<String, dynamic> json) => _$ResponseListFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ResponseListToJson(this);
+
+}
+
+@JsonSerializable()
 class User {
   @JsonKey(name: 'id_user')
   int idUser;

@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -17,14 +17,17 @@ dependencies:
   flutter_svg: 0.18.0
   retrofit: any
   logger: any
-  json_annotation: ^3.0.0
-  json_serializable: ^3.3.0
+  json_annotation: ^3.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   retrofit_generator: any
+  json_serializable: ^3.4.0
   build_runner: any
+
+dependency_overrides:
+  analyzer: '0.39.14'
 
 flutter:
   uses-material-design: true

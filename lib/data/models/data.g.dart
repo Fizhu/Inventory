@@ -6,6 +6,36 @@ part of 'data.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+ResponseData _$ResponseDataFromJson(Map<String, dynamic> json) {
+  return ResponseData(
+    json['status'] as bool,
+    json['message'] as String,
+    json['data'] as Map<String, dynamic>,
+  );
+}
+
+Map<String, dynamic> _$ResponseDataToJson(ResponseData instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
+      'data': instance.data,
+    };
+
+ResponseList _$ResponseListFromJson(Map<String, dynamic> json) {
+  return ResponseList(
+    json['status'] as bool,
+    json['message'] as String,
+    json['data'] as List,
+  );
+}
+
+Map<String, dynamic> _$ResponseListToJson(ResponseList instance) =>
+    <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
+      'data': instance.list,
+    };
+
 User _$UserFromJson(Map<String, dynamic> json) {
   return User(
     json['id_user'] as int,
