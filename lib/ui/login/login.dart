@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:inventory/data/remote/rest_client.dart';
 import 'package:inventory/utils/ext.dart';
 
@@ -15,7 +16,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible;
   String _email, _password;
-  RestClient _restClient = RestClient(Dio());
+  static final dio = Dio();
+  final _restClient = RestClient(dio);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -34,17 +36,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _login() async {
-    try {
-      Ext.showLoading(context);
-      var login = await _restClient.login(_email, _password);
-      if (login.status) {
+    Ext.showLoading(context);
+    await _restClient.login(_email, _password).then((value) {
+      log(value.toString());
+      if (value.status) {
         Ext.dismissLoading(context);
-        Fluttertoast.showToast(msg: login.message);
+        Ext.toast(value.message);
       } else {
         Ext.dismissLoading(context);
-        Fluttertoast.showToast(msg: login.message);
+        Ext.toast(value.message);
       }
-    } on DioError catch (e, s) {
+    }, onError: (e, s) {
       Ext.dismissLoading(context);
       if (e.type == DioErrorType.CONNECT_TIMEOUT ||
           e.type == DioErrorType.RECEIVE_TIMEOUT) {
@@ -56,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
         Ext.handleError(
             'Something when wrong', e.message + '\n' + 'StackTrace : $s');
       }
-    }
+    });
   }
 
   void _handleSubmit() async {

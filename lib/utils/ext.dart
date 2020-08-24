@@ -5,11 +5,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class Ext {
   static handleError(String toastMessage, String errorMessage) {
-    Fluttertoast.showToast(
-        msg: toastMessage,
-        backgroundColor: Colors.white,
-        textColor: Colors.black);
+    toast(toastMessage);
     log(errorMessage);
+  }
+
+  static toast(String message) {
+    Fluttertoast.showToast(
+        msg: message, backgroundColor: Colors.white, textColor: Colors.black);
   }
 
   static showLoading(BuildContext context) {
@@ -24,7 +26,9 @@ class Ext {
               mainAxisSize: MainAxisSize.min,
               children: [
                 new CircularProgressIndicator(),
-                new SizedBox(width: 24.0,),
+                new SizedBox(
+                  width: 24.0,
+                ),
                 new Text("Loading..."),
               ],
             ),
