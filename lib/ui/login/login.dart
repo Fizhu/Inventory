@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inventory/data/models/data.dart';
+import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/remote/rest_client.dart';
+import 'package:inventory/ui/home/home.dart';
 import 'package:inventory/utils/ext.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,10 +41,11 @@ class _LoginPageState extends State<LoginPage> {
   _login() async {
     Ext.showLoading(context);
     await _restClient.login(_email, _password).then((value) {
-      log(value.toString());
+      log(value.toJson().toString());
       if (value.status) {
         Ext.dismissLoading(context);
-        Ext.toast(value.message);
+        User _user = User.fromJson(value.data);
+        _successLogin(_user);
       } else {
         Ext.dismissLoading(context);
         Ext.toast(value.message);
@@ -63,14 +67,16 @@ class _LoginPageState extends State<LoginPage> {
 
   void _handleSubmit() async {
     final FormState form = _formKey.currentState;
-    if (!form.validate()) {
-    } else {
+    if (form.validate()) {
       form.save();
-//      UserPref.setStatus();
-//      UserPref.setUser(user);
       _login();
-//      Navigator.pushReplacementNamed(context, HomePage.routeName);
     }
+  }
+
+  void _successLogin(User user) {
+    UserPref.setStatus();
+    UserPref.setUser(user);
+    Navigator.pushReplacementNamed(context, HomePage.routeName);
   }
 
   Widget _pwFormInput() {

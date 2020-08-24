@@ -43,7 +43,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     json['nama'] as String,
     json['email'] as String,
     json['token'] as String,
-    json['telepon'] as String,
+    json['telepon'] as int,
     json['alamat'] as String,
     json['foto'] as String,
   );

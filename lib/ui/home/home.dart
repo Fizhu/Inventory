@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventory/utils/pref.dart';
+import 'package:inventory/data/pref/pref.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';

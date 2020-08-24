@@ -62,14 +62,14 @@ class UserPref {
     return prefs.getInt(_PREF_JABATAN) ?? 0;
   }
 
-  static setTelepon(String telepon) async {
+  static setTelepon(int telepon) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_PREF_TELEPON, telepon);
+    prefs.setInt(_PREF_TELEPON, telepon);
   }
 
-  static Future<String> getTelepon() async {
+  static Future<int> getTelepon() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_TELEPON) ?? 'No data';
+    return prefs.getInt(_PREF_TELEPON) ?? 0;
   }
 
   static setAlamat(String alamat) async {

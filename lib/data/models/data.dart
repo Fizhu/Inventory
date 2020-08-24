@@ -49,7 +49,7 @@ class User {
   @JsonKey(name: 'token')
   final String token;
   @JsonKey(name: 'telepon')
-  final String telepon;
+  final int telepon;
   @JsonKey(name: 'alamat')
   final String alamat;
   @JsonKey(name: 'foto')

@@ -3,7 +3,7 @@ import 'package:inventory/ui/add/add.dart';
 import 'package:inventory/ui/detail/detail.dart';
 import 'package:inventory/ui/home/home.dart';
 import 'package:inventory/ui/login/login.dart';
-import 'package:inventory/utils/pref.dart';
+import 'package:inventory/data/pref/pref.dart';
 
 String _route = LoginPage.routeName;
 bool _isLogin;
