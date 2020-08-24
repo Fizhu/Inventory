@@ -19,8 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool _passwordVisible;
   String _email, _password;
-  static final dio = Dio();
-  final _restClient = RestClient(dio);
+  final _restClient = RestClient(Dio());
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

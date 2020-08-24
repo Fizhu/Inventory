@@ -25,10 +25,13 @@ class ResponseList {
   final bool status;
   @JsonKey(name: 'message')
   final String message;
+  @JsonKey(name: 'total')
+  final int total;
   @JsonKey(name: 'data')
   final List<dynamic> list;
 
-  ResponseList(this.status, this.message, this.list);
+
+  ResponseList(this.status, this.message, this.total, this.list);
 
   factory ResponseList.fromJson(Map<String, dynamic> json) =>
       _$ResponseListFromJson(json);
@@ -61,4 +64,27 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
+}
+
+@JsonSerializable()
+class Barang {
+  @JsonKey(name: 'id_barang')
+  final int idBarang;
+  @JsonKey(name: 'id_user')
+  final int idUser;
+  @JsonKey(name: 'nama_barang')
+  final String namaBarang;
+  @JsonKey(name: 'jumlah')
+  final int jumlah;
+  @JsonKey(name: 'tanggal_masuk')
+  final String tanggalMasuk;
+  @JsonKey(name: 'foto')
+  final String foto;
+
+  Barang(this.idBarang, this.idUser, this.namaBarang, this.jumlah,
+      this.tanggalMasuk, this.foto);
+
+  factory Barang.fromJson(Map<String, dynamic> json) => _$BarangFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BarangToJson(this);
 }

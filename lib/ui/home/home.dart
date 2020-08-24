@@ -1,6 +1,13 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/data/models/data.dart';
 import 'package:inventory/data/pref/pref.dart';
+import 'package:inventory/data/remote/rest_client.dart';
 import 'package:inventory/ui/login/login.dart';
+import 'package:inventory/utils/ext.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -11,12 +18,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _name = 'No Data';
+  int _idUser;
+  final _restClient = RestClient(Dio());
+  List<Barang> _listBarang = List();
 
   _getData() async {
     var _name = await UserPref.getNama();
+    var _idUser = await UserPref.getId();
     setState(() {
       this._name = _name;
+      this._idUser = _idUser;
     });
+    _getListFromServer();
   }
 
   BottomAppBar _bottomAppBar() {
@@ -25,7 +38,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           IconButton(
             icon: Icon(Icons.person_outline),
-            onPressed: () {},
+            onPressed: () {
+              _showLogoutDialog();
+            },
           ),
           Text(_name),
         ],
@@ -54,8 +69,8 @@ class _HomePageState extends State<HomePage> {
               child: Text('Go Ahead'),
               onPressed: () {
                 UserPref.clearData();
-                Navigator.pushNamedAndRemoveUntil(context, LoginPage.routeName,
-                    (ModalRoute.withName(LoginPage.routeName)));
+                Navigator.pushNamedAndRemoveUntil(
+                    context, LoginPage.routeName, (r) => false);
               },
             ),
             FlatButton(
@@ -70,14 +85,59 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _createList(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, position) {
+        return GestureDetector(
+          onTap: Ext.toast(_listBarang[position].namaBarang),
+          child: Card(
+            elevation: 2.0,
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 50.0,
+              ),
+            ),
+          ),
+        );
+      },
+      itemCount: _listBarang.length,
+    );
+  }
+
+  _getListFromServer() async {
+    await _restClient.getBarangById(_idUser).then((value) {
+      log(value.toJson().toString());
+      if (value.status) {
+        List<Barang> listBarang = value.list;
+        setState(() {
+          _listBarang = listBarang;
+        });
+      } else {
+        Ext.toast(value.message);
+      }
+    }, onError: (e, s) {
+      if (e.type == DioErrorType.CONNECT_TIMEOUT ||
+          e.type == DioErrorType.RECEIVE_TIMEOUT) {
+        Ext.handleError('Connection Timeout', e.message);
+      } else if (e.type == DioErrorType.DEFAULT) {
+        Ext.handleError(
+            'Connection Problem', e.message + '\n' + 'StackTrace : $s');
+      } else {
+        Ext.handleError(
+            'Something when wrong', e.message + '\n' + 'StackTrace : $s');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _getData();
     return Scaffold(
         appBar: AppBar(
-          title: Center(
-            child: Text('Inventory'),
-          ),
+          title: Text('Inventory'),
+          centerTitle: true,
         ),
         bottomNavigationBar: _bottomAppBar(),
         floatingActionButton: FloatingActionButton(
@@ -87,12 +147,7 @@ class _HomePageState extends State<HomePage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         body: SafeArea(
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child:
-                  Column(mainAxisSize: MainAxisSize.max, children: <Widget>[]),
-            ),
+            child: _createList(context),
           ),
         ));
   }

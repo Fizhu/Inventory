@@ -25,6 +25,7 @@ ResponseList _$ResponseListFromJson(Map<String, dynamic> json) {
   return ResponseList(
     json['status'] as bool,
     json['message'] as String,
+    json['total'] as int,
     json['data'] as List,
   );
 }
@@ -33,6 +34,7 @@ Map<String, dynamic> _$ResponseListToJson(ResponseList instance) =>
     <String, dynamic>{
       'status': instance.status,
       'message': instance.message,
+      'total': instance.total,
       'data': instance.list,
     };
 
@@ -57,5 +59,25 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'token': instance.token,
       'telepon': instance.telepon,
       'alamat': instance.alamat,
+      'foto': instance.foto,
+    };
+
+Barang _$BarangFromJson(Map<String, dynamic> json) {
+  return Barang(
+    json['id_barang'] as int,
+    json['id_user'] as int,
+    json['nama_barang'] as String,
+    json['jumlah'] as int,
+    json['tanggal_masuk'] as String,
+    json['foto'] as String,
+  );
+}
+
+Map<String, dynamic> _$BarangToJson(Barang instance) => <String, dynamic>{
+      'id_barang': instance.idBarang,
+      'id_user': instance.idUser,
+      'nama_barang': instance.namaBarang,
+      'jumlah': instance.jumlah,
+      'tanggal_masuk': instance.tanggalMasuk,
       'foto': instance.foto,
     };

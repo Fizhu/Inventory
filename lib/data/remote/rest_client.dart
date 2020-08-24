@@ -15,4 +15,7 @@ abstract class RestClient {
   @FormUrlEncoded()
   Future<ResponseData> login(
       @Field("email") String email, @Field("password") String password);
+
+  @GET(ApiEndpoint.ENDPOINT_GET_LIST_BARANG_BY_ID)
+  Future<ResponseList> getBarangById(@Query("id_user") int idUser);
 }

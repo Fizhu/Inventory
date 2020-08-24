@@ -37,4 +37,23 @@ class _RestClient implements RestClient {
     final value = ResponseData.fromJson(_result.data);
     return value;
   }
+
+  @override
+  getBarangById(idUser) async {
+    ArgumentError.checkNotNull(idUser, 'idUser');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id_user': idUser};
+    final _data = <String, dynamic>{};
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        'getlistbarangbyid.php',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ResponseList.fromJson(_result.data);
+    return value;
+  }
 }
