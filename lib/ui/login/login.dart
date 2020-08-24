@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _login() async {
     Ext.showLoading(context);
-    await _restClient.login(_email, _password).then((value) {
+    await _restClient.login(_email.trim(), _password).then((value) {
       log(value.toJson().toString());
       if (value.status) {
         Ext.dismissLoading(context);
