@@ -7,7 +7,6 @@ import 'package:inventory/data/models/data.dart';
 import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/remote/rest_client.dart';
 import 'package:inventory/ui/login/login.dart';
-import 'package:inventory/utils/ext.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -20,7 +19,7 @@ class _HomePageState extends State<HomePage> {
   String _name = 'No Data';
   int _idUser;
   final _restClient = RestClient(Dio());
-  List<Barang> _listBarang = List();
+  Future<List<Barang>> _listBarang;
 
   _getData() async {
     var _name = await UserPref.getNama();
@@ -29,11 +28,11 @@ class _HomePageState extends State<HomePage> {
       this._name = _name;
       this._idUser = _idUser;
     });
-    _getListFromServer();
   }
 
   BottomAppBar _bottomAppBar() {
     return BottomAppBar(
+      clipBehavior: Clip.hardEdge,
       child: Row(
         children: [
           IconButton(
@@ -85,11 +84,11 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _createList(BuildContext context) {
+  ListView _createList(BuildContext context, List<Barang> listBarang) {
     return ListView.builder(
+      itemCount: listBarang.isEmpty ? 0 : listBarang.length,
       itemBuilder: (context, position) {
         return GestureDetector(
-          onTap: Ext.toast(_listBarang[position].namaBarang),
           child: Card(
             elevation: 2.0,
             child: Padding(
@@ -97,38 +96,31 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 50.0,
+                child: Text(listBarang[position].namaBarang),
               ),
             ),
           ),
         );
       },
-      itemCount: _listBarang.length,
     );
   }
 
-  _getListFromServer() async {
+  Future<List<Barang>> _getListFromServer() async {
+    List<Barang> list = List();
     await _restClient.getBarangById(_idUser).then((value) {
-      log(value.toJson().toString());
-      if (value.status) {
-        List<Barang> listBarang = value.list;
-        setState(() {
-          _listBarang = listBarang;
-        });
-      } else {
-        Ext.toast(value.message);
-      }
-    }, onError: (e, s) {
-      if (e.type == DioErrorType.CONNECT_TIMEOUT ||
-          e.type == DioErrorType.RECEIVE_TIMEOUT) {
-        Ext.handleError('Connection Timeout', e.message);
-      } else if (e.type == DioErrorType.DEFAULT) {
-        Ext.handleError(
-            'Connection Problem', e.message + '\n' + 'StackTrace : $s');
-      } else {
-        Ext.handleError(
-            'Something when wrong', e.message + '\n' + 'StackTrace : $s');
-      }
+      log('VALUE : ${value.toJson().toString()}');
+      var listBarang = value.list;
+      listBarang.forEach((element) {
+        list.add(Barang.fromJson(element));
+      });
     });
+    return list;
+  }
+
+  @override
+  void initState() {
+    _listBarang = _getListFromServer();
+    super.initState();
   }
 
   @override
@@ -145,10 +137,20 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {},
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: SafeArea(
-          child: Container(
-            child: _createList(context),
-          ),
+        body: FutureBuilder(
+          future: _listBarang,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              List<Barang> list = snapshot.data;
+              return list.isNotEmpty
+                  ? _createList(context, list)
+                  : Center(
+                      child: Text('No Data'),
+                    );
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ));
   }
 }
