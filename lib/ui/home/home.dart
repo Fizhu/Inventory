@@ -85,20 +85,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   ListView _createList(BuildContext context, List<Barang> listBarang) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) => Divider(
+        color: Colors.white,
+      ),
       itemCount: listBarang.isEmpty ? 0 : listBarang.length,
       itemBuilder: (context, position) {
         return GestureDetector(
-          child: Card(
-            elevation: 2.0,
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 50.0,
-                child: Text(listBarang[position].namaBarang),
-              ),
+          onTap: () {
+            log(position.toString());
+          },
+          child: ListTile(
+            leading: FlutterLogo(
+              size: 56.0,
             ),
+            title: Text(listBarang[position].namaBarang),
+            subtitle: Text(listBarang[position].tanggalMasuk),
           ),
         );
       },
@@ -114,6 +116,30 @@ class _HomePageState extends State<HomePage> {
         list.add(Barang.fromJson(element));
       });
     });
+    return list;
+  }
+
+  _listBuilderWithFuture() => FutureBuilder(
+        future: _listBarang,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Barang> list = snapshot.data;
+            return list.isNotEmpty
+                ? _createList(context, list)
+                : Center(
+                    child: Text('No Data'),
+                  );
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      );
+
+  List<Barang> _dummyListBarang() {
+    List<Barang> list = List();
+    for (var i = 0; i < 15; i++) {
+      list.add(Barang(i, i, "Barang $i", 100 + i, "2020-10-10", "gambar.jpg"));
+    }
     return list;
   }
 
@@ -137,20 +163,6 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {},
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: FutureBuilder(
-          future: _listBarang,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Barang> list = snapshot.data;
-              return list.isNotEmpty
-                  ? _createList(context, list)
-                  : Center(
-                      child: Text('No Data'),
-                    );
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ));
+        body: _listBuilderWithFuture());
   }
 }
