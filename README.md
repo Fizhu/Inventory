@@ -1,5 +1,5 @@
 # inventory
 
-An Inventory app made with flutter'
+An Inventory app made with flutter
 
 ## WIP 😬
