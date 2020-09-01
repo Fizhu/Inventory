@@ -7,6 +7,7 @@ import 'package:inventory/data/models/data.dart';
 import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/remote/rest_client.dart';
 import 'package:inventory/ui/login/login.dart';
+import 'package:inventory/utils/ext.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -32,7 +33,6 @@ class _HomePageState extends State<HomePage> {
 
   BottomAppBar _bottomAppBar() {
     return BottomAppBar(
-      clipBehavior: Clip.hardEdge,
       child: Row(
         children: [
           IconButton(
@@ -94,6 +94,7 @@ class _HomePageState extends State<HomePage> {
         return GestureDetector(
           onTap: () {
             log(position.toString());
+            Ext.toast(listBarang[position].namaBarang);
           },
           child: ListTile(
             leading: FlutterLogo(
@@ -163,6 +164,6 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {},
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: _listBuilderWithFuture());
+        body: _createList(context, _dummyListBarang()));
   }
 }
