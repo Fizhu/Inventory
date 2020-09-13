@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory/bloc/barang/barang_bloc.dart';
+import 'package:inventory/bloc/bloc_observer.dart';
 import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/repository/app_repository.dart';
 import 'package:inventory/ui/add/add.dart';
@@ -12,6 +13,7 @@ String _route = LoginPage.routeName;
 bool _isLogin;
 
 Future<void> main() async {
+  Bloc.observer = SimpleBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   _isLogin = await UserPref.getStatus();
   if (_isLogin) {
