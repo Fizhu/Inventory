@@ -12,13 +12,21 @@ class AppRepository implements Repository {
 
   @override
   Future<ResponseList> getBarangById(int idUser) async {
-    final data = await _restClient.getBarangById(idUser);
-    return data;
+    try {
+      final data = await _restClient.getBarangById(idUser);
+      return data;
+    } catch (e) {
+      return e;
+    }
   }
 
   @override
-  Future<ResponseData> login(String email, String password) {
-    final data = _restClient.login(email, password);
-    return data;
+  Future<ResponseData> login(String email, String password) async {
+    try {
+      final data = await _restClient.login(email, password);
+      return data;
+    } catch (e) {
+      return e;
+    }
   }
 }

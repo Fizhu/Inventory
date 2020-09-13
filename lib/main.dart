@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inventory/bloc/barang/barang_bloc.dart';
+import 'package:inventory/data/pref/pref.dart';
+import 'package:inventory/data/repository/app_repository.dart';
 import 'package:inventory/ui/add/add.dart';
 import 'package:inventory/ui/detail/detail.dart';
 import 'package:inventory/ui/home/home.dart';
 import 'package:inventory/ui/login/login.dart';
-import 'package:inventory/data/pref/pref.dart';
 
 String _route = LoginPage.routeName;
 bool _isLogin;
@@ -34,7 +37,10 @@ class MyApp extends StatelessWidget {
       initialRoute: _route,
       routes: {
         LoginPage.routeName: (context) => LoginPage(),
-        HomePage.routeName: (context) => HomePage(),
+        HomePage.routeName: (context) => BlocProvider(
+              create: (context) => BarangBloc(repository: AppRepository()),
+              child: HomePage(),
+            ),
         DetailPage.routeName: (context) => DetailPage(),
         AddPage.routeName: (context) => AddPage(),
       },

@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inventory/bloc/barang/barang_bloc.dart';
 import 'package:inventory/data/models/data.dart';
 import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/remote/rest_client.dart';
@@ -146,8 +148,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _listBarang = _getListFromServer();
     super.initState();
+    context.bloc<BarangBloc>().add(LoadBarang());
   }
 
   @override
@@ -164,6 +166,26 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {},
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: _createList(context, _dummyListBarang()));
+        body: BlocBuilder<BarangBloc, BarangState>(
+          builder: (context, state) {
+            if (state is BarangLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is BarangHasData) {
+              return _createList(context, state.list);
+            } else if (state is BarangHasNoData) {
+              return Center(
+                child: Text('No Data'),
+              );
+            } else if (state is BarangNoConnection) {
+              return Center(
+                child: Text('No Connection'),
+              );
+            } else {
+              return Center(
+                child: Text('Something when wrong'),
+              );
+            }
+          },
+        ));
   }
 }
