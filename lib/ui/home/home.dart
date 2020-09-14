@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
               return _createList(context, state.list);
             } else if (state is BarangHasNoData) {
               return Center(
-                child: Text('No Data'),
+                child: Text(state.message),
               );
             } else if (state is BarangNoConnection) {
               return Center(

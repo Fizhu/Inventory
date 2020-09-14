@@ -45,7 +45,7 @@ class BarangBloc extends Bloc<BarangEvent, BarangState> {
           yield BarangHasNoData(data.message);
         }
       }
-    } catch (e) {
+    } on DioError catch (e) {
       if (e.type == DioErrorType.CONNECT_TIMEOUT ||
           e.type == DioErrorType.RECEIVE_TIMEOUT) {
         yield BarangNoConnection();
