@@ -16,7 +16,7 @@ class AppRepository implements Repository {
       final data = await _restClient.getBarangById(idUser);
       return data;
     } catch (e) {
-      return e;
+      throw Exception() ;
     }
   }
 
