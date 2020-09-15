@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -19,6 +20,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _name = 'No Data';
+  Completer<void> _refreshCompleter;
 
   _getData() async {
     var _name = await UserPref.getNama();
@@ -116,9 +118,41 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> _refresh() {
+    context.bloc<BarangBloc>().add(LoadBarang());
+    return _refreshCompleter.future;
+  }
+
+  _completeRefresh() {
+    _refreshCompleter?.complete();
+    _refreshCompleter = Completer();
+  }
+
+  _errorHandling(String message) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(child: Text(message)),
+          SizedBox(height: 16.0),
+          Center(
+            child: RaisedButton(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              textColor: Colors.white,
+              onPressed: () {
+                context.bloc<BarangBloc>().add(LoadBarang());
+              },
+              child: Text('Retry'),
+            ),
+          ),
+        ],
+      );
+
   @override
   void initState() {
     super.initState();
+    _refreshCompleter = Completer<void>();
     context.bloc<BarangBloc>().add(LoadBarang());
   }
 
@@ -136,26 +170,29 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {},
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: BlocBuilder<BarangBloc, BarangState>(
-          builder: (context, state) {
-            if (state is BarangLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is BarangHasData) {
-              return _createList(context, state.list);
-            } else if (state is BarangHasNoData) {
-              return Center(
-                child: Text(state.message),
-              );
-            } else if (state is BarangNoConnection) {
-              return Center(
-                child: Text('No Connection'),
-              );
-            } else {
-              return Center(
-                child: Text('Something when wrong'),
-              );
-            }
-          },
+        body: RefreshIndicator(
+          onRefresh: _refresh,
+          child: BlocBuilder<BarangBloc, BarangState>(
+            builder: (context, state) {
+              if (state is BarangLoading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (state is BarangHasData) {
+                _completeRefresh();
+                return _createList(context, state.list);
+              } else if (state is BarangHasNoData) {
+                _completeRefresh();
+                return Center(
+                  child: Text(state.message),
+                );
+              } else if (state is BarangNoConnection) {
+                _completeRefresh();
+                return _errorHandling('Connection Problem');
+              } else {
+                _completeRefresh();
+                return _errorHandling('Something went wrong');
+              }
+            },
+          ),
         ));
   }
 }
