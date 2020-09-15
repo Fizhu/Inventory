@@ -118,6 +118,38 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  GridView _createGrid(BuildContext context, List<Barang> listBarang) {
+    return GridView.count(
+      crossAxisCount: 2,
+      padding: EdgeInsets.all(8.0),
+      children: listBarang
+          .map((e) => GestureDetector(
+                onTap: () {
+                  log(listBarang.indexOf(e).toString());
+                  Ext.toast(e.namaBarang);
+                },
+                child: Card(
+                  child: Stack(
+                    children: [
+                      CachedNetworkImage(
+                        imageUrl: e.foto,
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            Image.asset(
+                              'assets/images/noimage.png',
+                              fit: BoxFit.fill,
+                            ),
+                        fit: BoxFit.fill,
+                      )
+                    ],
+                  ),
+                ),
+              ))
+          .toList(),
+    );
+  }
+
   Future<void> _refresh() {
     context.bloc<BarangBloc>().add(LoadBarang());
     return _refreshCompleter.future;
@@ -178,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                 return Center(child: CircularProgressIndicator());
               } else if (state is BarangHasData) {
                 _completeRefresh();
-                return _createList(context, state.list);
+                return _createGrid(context, state.list);
               } else if (state is BarangHasNoData) {
                 _completeRefresh();
                 return Center(
