@@ -124,9 +124,11 @@ class _HomePageState extends State<HomePage> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: MediaQuery.of(context).size.width /
-              MediaQuery.of(context).size.height /0.7,
+              MediaQuery.of(context).size.height /
+              0.67,
         ),
         itemBuilder: (context, position) {
+          var barang = listBarang[position];
           return Card(
             clipBehavior: Clip.antiAliasWithSaveLayer,
             semanticContainer: true,
@@ -135,26 +137,64 @@ class _HomePageState extends State<HomePage> {
             child: InkWell(
               splashColor: Colors.orangeAccent.withAlpha(30),
               onTap: () {
-                Ext.toast(listBarang[position].namaBarang);
+                Ext.toast(barang.namaBarang);
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   CachedNetworkImage(
-                    imageUrl: listBarang[position].foto,
-                    placeholder: (context, url) =>
-                        CircularProgressIndicator(),
+                    imageUrl: barang.foto,
+                    placeholder: (context, url) => CircularProgressIndicator(),
                     errorWidget: (context, url, error) => Container(
                       width: MediaQuery.of(context).size.width,
                       child: Image.asset(
                         'assets/images/noimage.png',
                         fit: BoxFit.cover,
-                        height: 100,
+                        height: 150,
                       ),
                     ),
                     fit: BoxFit.cover,
-                    height: 100,
+                    height: 150,
                   ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            barang.namaBarang,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 14.0, fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                Text(
+                                  'Stock : ${barang.jumlah}',
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: Colors.orangeAccent),
+                                ),
+                                Text(
+                                  barang.tanggalMasuk,
+                                  style: TextStyle(
+                                    fontSize: 10.0,
+                                  ),
+                                ),
+                              ]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
