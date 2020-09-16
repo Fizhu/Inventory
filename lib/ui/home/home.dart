@@ -119,35 +119,47 @@ class _HomePageState extends State<HomePage> {
   }
 
   GridView _createGrid(BuildContext context, List<Barang> listBarang) {
-    return GridView.count(
-      crossAxisCount: 2,
-      padding: EdgeInsets.all(8.0),
-      children: listBarang
-          .map((e) => GestureDetector(
-                onTap: () {
-                  log(listBarang.indexOf(e).toString());
-                  Ext.toast(e.namaBarang);
-                },
-                child: Card(
-                  child: Stack(
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: e.foto,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) =>
-                            Image.asset(
-                              'assets/images/noimage.png',
-                              fit: BoxFit.fill,
-                            ),
-                        fit: BoxFit.fill,
-                      )
-                    ],
+    return GridView.builder(
+        itemCount: listBarang.isEmpty ? 0 : listBarang.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: MediaQuery.of(context).size.width /
+              MediaQuery.of(context).size.height /0.7,
+        ),
+        itemBuilder: (context, position) {
+          return Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            semanticContainer: true,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0)),
+            child: InkWell(
+              splashColor: Colors.orangeAccent.withAlpha(30),
+              onTap: () {
+                Ext.toast(listBarang[position].namaBarang);
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: listBarang[position].foto,
+                    placeholder: (context, url) =>
+                        CircularProgressIndicator(),
+                    errorWidget: (context, url, error) => Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.asset(
+                        'assets/images/noimage.png',
+                        fit: BoxFit.cover,
+                        height: 100,
+                      ),
+                    ),
+                    fit: BoxFit.cover,
+                    height: 100,
                   ),
-                ),
-              ))
-          .toList(),
-    );
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   Future<void> _refresh() {
