@@ -74,6 +74,8 @@ class Barang {
   final int idUser;
   @JsonKey(name: 'nama_barang')
   final String namaBarang;
+  @JsonKey(name: 'keterangan')
+  final String keterangan;
   @JsonKey(name: 'jumlah')
   final int jumlah;
   @JsonKey(name: 'tanggal_masuk')
@@ -81,8 +83,9 @@ class Barang {
   @JsonKey(name: 'foto')
   final String foto;
 
-  Barang(this.idBarang, this.idUser, this.namaBarang, this.jumlah,
-      this.tanggalMasuk, this.foto);
+
+  Barang(this.idBarang, this.idUser, this.namaBarang, this.keterangan,
+      this.jumlah, this.tanggalMasuk, this.foto);
 
   factory Barang.fromJson(Map<String, dynamic> json) => _$BarangFromJson(json);
 

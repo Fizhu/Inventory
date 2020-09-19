@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory/bloc/barang/barang_bloc.dart';
 import 'package:inventory/data/models/data.dart';
 import 'package:inventory/data/pref/pref.dart';
+import 'package:inventory/ui/detail/detail.dart';
 import 'package:inventory/ui/login/login.dart';
 import 'package:inventory/utils/ext.dart';
 
@@ -137,7 +138,8 @@ class _HomePageState extends State<HomePage> {
             child: InkWell(
               splashColor: Colors.orangeAccent.withAlpha(30),
               onTap: () {
-                Ext.toast(barang.namaBarang);
+                Navigator.pushNamed(context, DetailPage.routeName,
+                    arguments: barang);
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -173,22 +175,22 @@ class _HomePageState extends State<HomePage> {
                             child: Align(
                               alignment: Alignment.bottomRight,
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                Text(
-                                  'Stock : ${barang.jumlah}',
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      color: Colors.orangeAccent),
-                                ),
-                                Text(
-                                  barang.tanggalMasuk,
-                                  style: TextStyle(
-                                    fontSize: 10.0,
-                                  ),
-                                ),
-                              ]),
+                                    Text(
+                                      'Stock : ${barang.jumlah}',
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          color: Colors.orangeAccent),
+                                    ),
+                                    Text(
+                                      barang.tanggalMasuk,
+                                      style: TextStyle(
+                                        fontSize: 10.0,
+                                      ),
+                                    ),
+                                  ]),
                             ),
                           ),
                         ],
