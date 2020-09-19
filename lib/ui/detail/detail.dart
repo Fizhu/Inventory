@@ -83,7 +83,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
                 SizedBox(height: 16.0,),
                 Text(
-                  'Deskrpsi :',
+                  'Deskripsi :',
                   style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
