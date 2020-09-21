@@ -35,7 +35,7 @@ class _DetailPageState extends State<DetailPage> {
             width: MediaQuery.of(context).size.width,
           ),
           AppBar(
-            title: Text('Detail Barang'),
+            title: Text('Detail Item'),
             backgroundColor: Colors.transparent,
           )
         ]),
@@ -83,7 +83,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
                 SizedBox(height: 16.0,),
                 Text(
-                  'Deskripsi :',
+                  'Description :',
                   style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
