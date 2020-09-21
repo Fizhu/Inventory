@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory/bloc/barang/barang_bloc.dart';
+import 'package:inventory/bloc/user/user_bloc.dart';
 import 'package:inventory/data/models/data.dart';
 import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/ui/detail/detail.dart';
@@ -20,15 +21,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String _name = 'No Data';
   Completer<void> _refreshCompleter;
-
-  _getData() async {
-    var _name = await UserPref.getNama();
-    setState(() {
-      this._name = _name;
-    });
-  }
 
   BottomAppBar _bottomAppBar() {
     return BottomAppBar(
@@ -40,7 +33,13 @@ class _HomePageState extends State<HomePage> {
               _showLogoutDialog();
             },
           ),
-          Text(_name),
+          BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+            if (state is UserExisted) {
+              return Text(state.user.nama);
+            } else {
+              return Text('User Not Existed');
+            }
+          }),
         ],
       ),
       shape: CircularNotchedRectangle(),
@@ -239,12 +238,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _refreshCompleter = Completer<void>();
+    context.bloc<UserBloc>().add(FetchUser());
     context.bloc<BarangBloc>().add(LoadBarang());
   }
 
   @override
   Widget build(BuildContext context) {
-    _getData();
     return Scaffold(
         appBar: AppBar(
           title: Text('Inventory'),

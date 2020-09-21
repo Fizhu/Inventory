@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inventory/bloc/barang/barang_bloc.dart';
 import 'package:inventory/bloc/bloc_observer.dart';
+import 'package:inventory/bloc/user/user_bloc.dart';
 import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/repository/app_repository.dart';
 import 'package:inventory/ui/add/add.dart';
@@ -39,8 +40,14 @@ class MyApp extends StatelessWidget {
       initialRoute: _route,
       routes: {
         LoginPage.routeName: (context) => LoginPage(),
-        HomePage.routeName: (context) => BlocProvider(
-              create: (context) => BarangBloc(repository: AppRepository()),
+        HomePage.routeName: (context) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                    create: (context) =>
+                        BarangBloc(repository: AppRepository())),
+                BlocProvider(
+                    create: (context) => UserBloc(repository: AppRepository())),
+              ],
               child: HomePage(),
             ),
         DetailPage.routeName: (context) => DetailPage(),

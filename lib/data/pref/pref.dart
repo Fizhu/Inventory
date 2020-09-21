@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:inventory/data/models/data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +13,7 @@ class UserPref {
   static const _PREF_TELEPON = 'keyTelepon';
   static const _PREF_ALAMAT = 'keyAlamat';
   static const _PREF_FOTO = 'keyFoto';
+  static const _PREF_USER = 'keyUser';
 
   static setStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

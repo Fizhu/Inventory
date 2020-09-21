@@ -12,7 +12,7 @@ class UserInitial extends UserState {}
 class UserExisted extends UserState {
   final User user;
 
-  const UserExisted({this.user});
+  const UserExisted(this.user);
 
   @override
   List<Object> get props => [user];

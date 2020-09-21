@@ -3,19 +3,35 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:inventory/data/models/data.dart';
+import 'package:inventory/data/repository/repository.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  UserBloc() : super(UserInitial());
+  final Repository repository;
+
+  UserBloc({this.repository}) : super(UserInitial());
 
   @override
   Stream<UserState> mapEventToState(
     UserEvent event,
-  ) async* {}
+  ) async* {
+    if (event is FetchUser) {
+      yield* _mapFetchUserToEvent();
+    }
+  }
 
-  Stream<User> _mapFetchUserToEvent() async* {
-    try {} catch (e) {}
+  Stream<UserState> _mapFetchUserToEvent() async* {
+    try {
+      var data = await repository.getUser();
+      if (data != null) {
+        yield UserExisted(data);
+      } else {
+        yield UserNotExisted();
+      }
+    } catch (e) {
+      yield UserNotExisted();
+    }
   }
 }

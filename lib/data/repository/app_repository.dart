@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:inventory/data/models/data.dart';
+import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/remote/rest_client.dart';
 import 'package:inventory/data/repository/repository.dart';
 
@@ -17,4 +18,7 @@ class AppRepository implements Repository {
   @override
   Future<ResponseData> login(String email, String password) async =>
       _restClient.login(email, password);
+
+  @override
+  Future<User> getUser() async => UserPref.getUser();
 }
