@@ -3,9 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:inventory/data/models/data.dart';
-import 'package:inventory/data/pref/pref.dart';
 import 'package:inventory/data/repository/repository.dart';
 
 part 'barang_event.dart';
@@ -28,8 +26,8 @@ class BarangBloc extends Bloc<BarangEvent, BarangState> {
   Stream<BarangState> _mapLoadBarangToState() async* {
     try {
       yield BarangLoading();
-      var idUser = await UserPref.getId();
-      var data = await repository.getBarangById(idUser);
+      var user = await repository.getUser();
+      var data = await repository.getBarangById(user.idUser);
       if (data.status) {
         if (data.list.isNotEmpty) {
           List<Barang> list = List();

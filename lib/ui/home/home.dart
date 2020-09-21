@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BlocBuilder<UserBloc, UserState>(builder: (context, state) {
             if (state is UserExisted) {
+              context.bloc<BarangBloc>().add(LoadBarang());
               return Text(state.user.nama);
             } else {
               return Text('User Not Existed');
@@ -239,7 +240,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _refreshCompleter = Completer<void>();
     context.bloc<UserBloc>().add(FetchUser());
-    context.bloc<BarangBloc>().add(LoadBarang());
   }
 
   @override
