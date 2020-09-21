@@ -6,4 +6,6 @@ abstract class Repository {
   Future<ResponseList> getBarangById(int idUser);
 
   Future<User> getUser();
+
+  saveUser(User user);
 }

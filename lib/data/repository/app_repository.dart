@@ -21,4 +21,7 @@ class AppRepository implements Repository {
 
   @override
   Future<User> getUser() async => UserPref.getUser();
+
+  @override
+  saveUser(User user) async => UserPref.setUser(user);
 }

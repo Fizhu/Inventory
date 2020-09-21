@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +8,7 @@ import 'package:inventory/bloc/barang/barang_bloc.dart';
 import 'package:inventory/bloc/user/user_bloc.dart';
 import 'package:inventory/data/models/data.dart';
 import 'package:inventory/data/pref/pref.dart';
+import 'package:inventory/ui/add/add.dart';
 import 'package:inventory/ui/detail/detail.dart';
 import 'package:inventory/ui/login/login.dart';
 import 'package:inventory/utils/ext.dart';
@@ -92,7 +92,6 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (context, position) {
         return GestureDetector(
           onTap: () {
-            log(position.toString());
             Ext.toast(listBarang[position].namaBarang);
           },
           child: ListTile(
@@ -252,7 +251,9 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: _bottomAppBar(),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, AddPage.routeName);
+          },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
         body: RefreshIndicator(
