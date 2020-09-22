@@ -16,7 +16,6 @@ class _AddPageState extends State<AddPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _dateController.text = _formatDateTime.format(_dateTimeNow);
   }
