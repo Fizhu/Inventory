@@ -26,6 +26,13 @@ class _AddPageState extends State<AddPage> {
         appBar: AppBar(
           title: Text('Add Item'),
         ),
+        bottomNavigationBar: RaisedButton(
+          textColor: Colors.white,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: EdgeInsets.all(16.0),
+          onPressed: () {},
+          child: Text('Submit'),
+        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(16.0),
@@ -33,36 +40,79 @@ class _AddPageState extends State<AddPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _formInput(TextInputType.text, 'Item Name', null, (value) {},
-                    (value) {}),
+                    (value) {}, 1),
                 SizedBox(
                   height: 16.0,
                 ),
-                _formInput(TextInputType.text, 'Description', null, (value) {},
-                    (value) {}),
+                _formInput(TextInputType.multiline, 'Description', null, (value) {},
+                    (value) {}, 5),
+                SizedBox(
+                  height: 16.0,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: Container(
+                        child: TextFormField(
+                          keyboardType: TextInputType.datetime,
+                          onSaved: (String value) {},
+                          validator: (String value) {},
+                          controller: _dateController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            labelText: 'Date Time',
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.date_range),
+                              onPressed: () {
+                                _selectDate(context);
+                              },
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 8.0,),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              labelText: 'Quantity',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              )),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
                 SizedBox(
                   height: 16.0,
                 ),
                 Container(
-                  child: TextFormField(
-                    keyboardType: TextInputType.datetime,
-                    onSaved: (String value) {},
-                    validator: (String value) {},
-                    controller: _dateController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'Date Time',
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.date_range),
-                        onPressed: () {
-                          _selectDate(context);
-                        },
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                  height: 200.0,
+                  child: Card(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    semanticContainer: true,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0)),
+                    child: InkWell(
+                      onTap: () {},
+                      splashColor: Colors.orangeAccent.withAlpha(30),
+                      child: Center(
+                        child: Text('Tap to take a picture',
+                        style: TextStyle(
+                          color: Colors.grey
+                        ),),
                       ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -91,14 +141,16 @@ class _AddPageState extends State<AddPage> {
   }
 
   _formInput(TextInputType textInputType, String label, Widget suffixIcon,
-          Function(String value) f, Function(String value) v) =>
+          Function(String value) f, Function(String value) v, int maxline) =>
       Container(
         child: TextFormField(
           keyboardType: textInputType,
           onSaved: f,
           validator: v,
+          maxLines: maxline,
           decoration: InputDecoration(
             labelText: label,
+            alignLabelWithHint: true,
             suffixIcon: suffixIcon,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8.0),
