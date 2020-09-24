@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:inventory/utils/app_constant.dart';
@@ -14,12 +16,13 @@ class _AddPageState extends State<AddPage> {
   DateTime _dateTimeNow = DateTime.now();
   TextEditingController _dateController = TextEditingController();
   DateFormat _formatDateTime = DateFormat(AppConstant.DATE_TIME_FORMAT);
+  String _itemName, _descrption, _quantity, _dateTime;
 
   void _handleSubmit() async {
     final FormState form = _formKey.currentState;
     if (form.validate()) {
       form.save();
-      //TODO: Sumbit
+      //TODO: Submit
     }
   }
 
@@ -52,26 +55,38 @@ class _AddPageState extends State<AddPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _formInput(TextInputType.text, 'Item Name', null, (value) {},
-                          (value) {}, 1),
+                  _formInput(TextInputType.text, 'Item Name', null, (value) {
+                    _itemName = value;
+                  }, (value) {
+                    if (value.isEmpty) {
+                      return 'Cannot be empty';
+                    }
+                  }, 1),
                   SizedBox(
                     height: 16.0,
                   ),
-                  _formInput(
-                      TextInputType.multiline, 'Description', null, (value) {},
-                          (value) {}, 5),
+                  _formInput(TextInputType.multiline, 'Description', null,
+                      (value) {
+                    _descrption = value;
+                  }, (value) {
+                        if (value.isEmpty) {
+                          return 'Cannot be empty';
+                        }
+                      }, 5),
                   SizedBox(
                     height: 16.0,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         flex: 7,
                         child: Container(
                           child: TextFormField(
                             keyboardType: TextInputType.datetime,
-                            onSaved: (String value) {},
-                            validator: (String value) {},
+                            onSaved: (String value) {
+                              _dateTime = value;
+                            },
                             controller: _dateController,
                             readOnly: true,
                             decoration: InputDecoration(
@@ -89,19 +104,28 @@ class _AddPageState extends State<AddPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 8.0,),
+                      SizedBox(
+                        width: 8.0,
+                      ),
                       Expanded(
                         flex: 3,
-                        child: Container(
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                labelText: 'Quantity',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                )),
-                          ),
-                        ),
+                        child: _formInput(
+                            TextInputType.number, 'Quantity', null, (value) {
+                          _quantity = value;
+                        }, (value) {
+                          if (value.isEmpty) {
+                            return 'Cannot be empty';
+                          } else {
+                            try {
+                              var qty = int.parse(value);
+                              if (qty < 1) {
+                                return 'Mininimum is 1';
+                              }
+                            } catch (e) {
+                              log(e.toString());
+                            }
+                          }
+                        }, 1),
                       )
                     ],
                   ),
@@ -119,10 +143,10 @@ class _AddPageState extends State<AddPage> {
                         onTap: () {},
                         splashColor: Colors.orangeAccent.withAlpha(30),
                         child: Center(
-                          child: Text('Tap to take a picture',
-                            style: TextStyle(
-                                color: Colors.grey
-                            ),),
+                          child: Text(
+                            'Tap to take a picture',
+                            style: TextStyle(color: Colors.grey),
+                          ),
                         ),
                       ),
                     ),
@@ -148,21 +172,15 @@ class _AddPageState extends State<AddPage> {
           dateTime.year,
           dateTime.month,
           dateTime.day,
-          DateTime
-              .now()
-              .hour,
-          DateTime
-              .now()
-              .minute,
-          DateTime
-              .now()
-              .second);
+          DateTime.now().hour,
+          DateTime.now().minute,
+          DateTime.now().second);
       _dateController.text = _formatDateTime.format(selectedDateTime);
     }
   }
 
   _formInput(TextInputType textInputType, String label, Widget suffixIcon,
-      Function(String value) f, Function(String value) v, int maxline) =>
+          Function(String value) f, Function(String value) v, int maxline) =>
       Container(
         child: TextFormField(
           keyboardType: textInputType,
@@ -179,5 +197,4 @@ class _AddPageState extends State<AddPage> {
           ),
         ),
       );
-
 }
