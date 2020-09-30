@@ -24,4 +24,10 @@ class AppRepository implements Repository {
 
   @override
   saveUser(User user) async => UserPref.setUser(user);
+
+  @override
+  Future<ResponseData> insert(String namaBarang, String jumlah,
+      String tanggalMasuk, String keterangan, String foto) async =>
+      _restClient.insert(
+          namaBarang, jumlah, tanggalMasuk, keterangan, foto);
 }

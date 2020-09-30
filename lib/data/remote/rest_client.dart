@@ -18,4 +18,13 @@ abstract class RestClient {
 
   @GET(ApiEndpoint.ENDPOINT_GET_LIST_BARANG_BY_ID)
   Future<ResponseList> getBarangById(@Query("id_user") int idUser);
+
+  @POST(ApiEndpoint.ENDPOINT_INSERT_BARANG)
+  @FormUrlEncoded()
+  Future<ResponseData> insert(
+      @Field("nama_barang") String namaBarang,
+      @Field("jumlah") String jumlah,
+      @Field("tanggal_masuk") String tanggalMasuk,
+      @Field("keterangan") String keterangan,
+      @Field("foto") String foto);
 }

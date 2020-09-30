@@ -8,4 +8,7 @@ abstract class Repository {
   Future<User> getUser();
 
   saveUser(User user);
+
+  Future<ResponseData> insert(String namaBarang, String jumlah,
+      String tanggalMasuk, String keterangan, String foto);
 }

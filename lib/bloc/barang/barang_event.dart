@@ -8,3 +8,12 @@ abstract class BarangEvent extends Equatable {
 }
 
 class LoadBarang extends BarangEvent {}
+
+class InsertBarang extends BarangEvent {
+  final Barang barang;
+
+  const InsertBarang(this.barang);
+
+  @override
+  List<Object> get props => [];
+}

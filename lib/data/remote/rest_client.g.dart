@@ -56,4 +56,35 @@ class _RestClient implements RestClient {
     final value = ResponseList.fromJson(_result.data);
     return value;
   }
+
+  @override
+  insert(namaBarang, jumlah, tanggalMasuk, keterangan, foto) async {
+    ArgumentError.checkNotNull(namaBarang, 'namaBarang');
+    ArgumentError.checkNotNull(jumlah, 'jumlah');
+    ArgumentError.checkNotNull(tanggalMasuk, 'tanggalMasuk');
+    ArgumentError.checkNotNull(keterangan, 'keterangan');
+    ArgumentError.checkNotNull(foto, 'foto');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = {
+      'nama_barang': namaBarang,
+      'jumlah': jumlah,
+      'tanggal_masuk': tanggalMasuk,
+      'keterangan': keterangan,
+      'foto': foto
+    };
+    _data.removeWhere((k, v) => v == null);
+    final Response<Map<String, dynamic>> _result = await _dio.request(
+        'insertbarang.php',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            contentType: 'application/x-www-form-urlencoded',
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ResponseData.fromJson(_result.data);
+    return value;
+  }
 }

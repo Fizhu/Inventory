@@ -39,3 +39,7 @@ class BarangError extends BarangState {
   @override
   List<Object> get props => [message];
 }
+
+class BarangPost extends BarangState {}
+
+class BarangPostSuccess extends BarangState {}
