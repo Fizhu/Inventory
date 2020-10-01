@@ -22,6 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Completer<void> _refreshCompleter;
+  List<Barang> listBarang = List();
 
   BottomAppBar _bottomAppBar() {
     return BottomAppBar(
@@ -83,7 +84,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ListView _createList(BuildContext context, List<Barang> listBarang) {
+  ListView _createList(BuildContext context) {
     return ListView.separated(
       separatorBuilder: (context, index) => Divider(
         color: Colors.white,
@@ -118,14 +119,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future _goToDetail(Barang barang) async =>
+  Future _goToDetail(Barang barang, int position) async =>
       await Navigator.pushNamed(context, DetailPage.routeName,
               arguments: barang)
           .then((value) => {
-                if (value != null) {Ext.toast(value)}
+                if (value != null)
+                  {
+                    setState(() {
+//              listBarang.removeAt(position);
+                      listBarang.add(Barang(
+                        1,
+                        1,
+                        'YOOOOO',
+                        'LOREM LOREM LOREM',
+                        200,
+                        '20202020',
+                        '20202020',
+                      ));
+                    })
+                  }
               });
 
-  GridView _createGrid(BuildContext context, List<Barang> listBarang) {
+  GridView _createGrid(BuildContext context) {
     return GridView.builder(
         itemCount: listBarang.isEmpty ? 0 : listBarang.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -144,7 +159,7 @@ class _HomePageState extends State<HomePage> {
             child: InkWell(
               splashColor: Colors.orangeAccent.withAlpha(30),
               onTap: () {
-                _goToDetail(barang);
+                _goToDetail(barang, position);
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -210,6 +225,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _refresh() {
+    listBarang.clear();
     context.bloc<BarangBloc>().add(LoadBarang());
     return _refreshCompleter.future;
   }
@@ -266,11 +282,14 @@ class _HomePageState extends State<HomePage> {
           onRefresh: _refresh,
           child: BlocBuilder<BarangBloc, BarangState>(
             builder: (context, state) {
-              if (state is BarangLoading) {
-                return Center(child: CircularProgressIndicator());
-              } else if (state is BarangHasData) {
+              if (state is BarangHasData) {
                 _completeRefresh();
-                return _createGrid(context, state.list);
+                if (listBarang.isEmpty) {
+                  listBarang = state.list;
+                }
+                return _createGrid(context);
+              } else if (state is BarangLoading) {
+                return Center(child: CircularProgressIndicator());
               } else if (state is BarangHasNoData) {
                 _completeRefresh();
                 return Center(
