@@ -118,6 +118,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future _goToDetail(Barang barang) async =>
+      await Navigator.pushNamed(context, DetailPage.routeName,
+              arguments: barang)
+          .then((value) => {
+                if (value != null) {Ext.toast(value)}
+              });
+
   GridView _createGrid(BuildContext context, List<Barang> listBarang) {
     return GridView.builder(
         itemCount: listBarang.isEmpty ? 0 : listBarang.length,
@@ -137,8 +144,7 @@ class _HomePageState extends State<HomePage> {
             child: InkWell(
               splashColor: Colors.orangeAccent.withAlpha(30),
               onTap: () {
-                Navigator.pushNamed(context, DetailPage.routeName,
-                    arguments: barang);
+                _goToDetail(barang);
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,

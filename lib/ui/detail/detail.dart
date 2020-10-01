@@ -37,6 +37,14 @@ class _DetailPageState extends State<DetailPage> {
           AppBar(
             title: Text('Detail Item'),
             backgroundColor: Colors.transparent,
+            actions: [
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  Navigator.of(context).pop("Delete");
+                },
+              )
+            ],
           )
         ]),
         Padding(
@@ -49,53 +57,52 @@ class _DetailPageState extends State<DetailPage> {
             ),
             Text(
               barang.tanggalMasuk,
-              style: TextStyle(
-                  fontSize: 12.0,
-                  color: Colors.white70),
+              style: TextStyle(fontSize: 12.0, color: Colors.white70),
             ),
-                Container(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Stock : ${barang.jumlah}',
-                            style: TextStyle(
-                                fontSize: 12.0,
-                                color: Colors.orangeAccent),
-                          ),
-                          Text(
-                            'Owner ID : ${barang.idUser}',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ]),
-                  ),
-                ),
+            Container(
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Stock : ${barang.jumlah}',
+                        style: TextStyle(
+                            fontSize: 12.0, color: Colors.orangeAccent),
+                      ),
+                      Text(
+                        'Owner ID : ${barang.idUser}',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ]),
+              ),
+            ),
             SizedBox(
               height: 8.0,
             ),
             Divider(
               color: Colors.white70,
             ),
-                SizedBox(height: 16.0,),
-                Text(
-                  'Description :',
-                  style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                SizedBox(height: 8.0,),
-                Text(
-                  barang.keterangan,
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.white70),
-                ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Text(
+              'Description :',
+              style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            Text(
+              barang.keterangan,
+              style: TextStyle(fontSize: 12.0, color: Colors.white70),
+            ),
           ]),
         )
       ],
