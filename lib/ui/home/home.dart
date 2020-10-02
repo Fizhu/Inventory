@@ -125,18 +125,22 @@ class _HomePageState extends State<HomePage> {
           .then((value) => {
                 if (value != null)
                   {
-                    setState(() {
-//              listBarang.removeAt(position);
-                      listBarang.add(Barang(
-                        1,
-                        1,
-                        'YOOOOO',
-                        'LOREM LOREM LOREM',
-                        200,
-                        '20202020',
-                        '20202020',
-                      ));
-                    })
+                    context.bloc<BarangBloc>().add(InsertBarang(Barang(
+                          1,
+                          1,
+                          'YOOOOO',
+                          'LOREM LOREM LOREM',
+                          200,
+                          '20202020',
+                          '20202020',
+                        ))),
+                    BlocListener<BarangBloc, BarangState>(
+                      listener: (context, state) {
+                        if (state is BarangListed) {
+                          listBarang.add(state.barang);
+                        }
+                      },
+                    )
                   }
               });
 

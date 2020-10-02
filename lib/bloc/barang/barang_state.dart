@@ -43,3 +43,12 @@ class BarangError extends BarangState {
 class BarangPost extends BarangState {}
 
 class BarangPostSuccess extends BarangState {}
+
+class BarangListed extends BarangState {
+  final Barang barang;
+
+  const BarangListed(this.barang);
+
+  @override
+  List<Object> get props => [barang];
+}

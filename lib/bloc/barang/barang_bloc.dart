@@ -20,6 +20,8 @@ class BarangBloc extends Bloc<BarangEvent, BarangState> {
   ) async* {
     if (event is LoadBarang) {
       yield* _mapLoadBarangToState();
+    } else if (event is InsertBarang) {
+      yield* _mapInsertBarangToState(event);
     }
   }
 
@@ -55,35 +57,8 @@ class BarangBloc extends Bloc<BarangEvent, BarangState> {
     }
   }
 
-  Stream<BarangState> _mapInsertBarangToState() async* {
-    try {
-      yield BarangLoading();
-      var user = await repository.getUser();
-      var data = await repository.getBarangById(user.idUser);
-      if (data.status) {
-        if (data.list.isNotEmpty) {
-          List<Barang> list = List();
-          data.list.forEach((element) {
-            list.add(Barang.fromJson(element));
-          });
-          yield BarangHasData(list);
-        } else {
-          yield BarangHasNoData(data.message);
-        }
-      } else {
-        if (data.total == 0) {
-          yield BarangHasNoData(data.message);
-        }
-      }
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.CONNECT_TIMEOUT ||
-          e.type == DioErrorType.RECEIVE_TIMEOUT) {
-        yield BarangNoConnection();
-      } else if (e.type == DioErrorType.DEFAULT) {
-        yield BarangNoConnection();
-      } else {
-        yield BarangError(e.toString());
-      }
-    }
+  Stream<BarangState> _mapInsertBarangToState(
+      InsertBarang insertBarang) async* {
+    yield BarangListed(insertBarang.barang);
   }
 }

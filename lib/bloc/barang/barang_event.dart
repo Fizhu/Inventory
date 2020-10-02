@@ -15,5 +15,5 @@ class InsertBarang extends BarangEvent {
   const InsertBarang(this.barang);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [barang];
 }
